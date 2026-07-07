@@ -8,6 +8,8 @@ import type { Message as MessageType, Chunk, Document } from '@/lib/supabase';
 import FileUpload from '@/components/FileUpload';
 import { Send, KeyRound, Check, Sparkles, FileText, Loader2, LogOut, Library } from 'lucide-react';
 
+const GROQ_KEY_STORAGE_KEY = 'studypilot_groq_api_key';
+
 export default function Chat() {
   const router = useRouter();
   const { user, loading, signOut } = useAuth();
@@ -31,6 +33,15 @@ export default function Chat() {
       router.push('/');
     }
   }, [user, loading, router]);
+
+  useEffect(() => {
+    const savedKey = window.localStorage.getItem(GROQ_KEY_STORAGE_KEY);
+
+    if (savedKey) {
+      setApiKey(savedKey);
+      setShowKeyInput(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -77,6 +88,15 @@ export default function Chat() {
     if (newDocumentId) {
       router.push(`/chat?doc=${newDocumentId}`);
     }
+  };
+
+  const saveApiKey = () => {
+    const trimmedKey = apiKey.trim();
+    if (!trimmedKey) return;
+
+    window.localStorage.setItem(GROQ_KEY_STORAGE_KEY, trimmedKey);
+    setApiKey(trimmedKey);
+    setShowKeyInput(false);
   };
 
   const openDocument = (nextDocumentId: string) => {
@@ -345,12 +365,12 @@ export default function Chat() {
                   onChange={(e) => setApiKey(e.target.value)}
                   className="np-input flex-1"
                 />
-                <button onClick={() => setShowKeyInput(false)} disabled={!apiKey} className="np-btn-accent">
+                <button type="button" onClick={saveApiKey} disabled={!apiKey.trim()} className="np-btn-accent">
                   <Check size={16} />
                   Save key
                 </button>
               </div>
-              <p className="mt-2 text-xs text-slate-500">Stored only in this browser tab for the session - never uploaded.</p>
+              <p className="mt-2 text-xs text-slate-500">Stored only in this browser on this device - never uploaded to StudyPilot.</p>
             </div>
           )}
 
