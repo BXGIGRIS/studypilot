@@ -1,0 +1,2 @@
+ huihui_ai/qwen2.5-abliterate:3b
+

@@ -1,0 +1,112 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0e0e11;
+  color: #ededf0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Keyboard users get a clear accent ring; mouse users don't. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #0e0e11, 0 0 0 4px rgba(200, 242, 77, 0.75);
+  border-radius: 0.6rem;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+/* App backdrop: near-black with one faint top glow so it reads intentional. */
+.night-shell {
+  background:
+    radial-gradient(90% 55% at 50% -8%, rgba(200, 242, 77, 0.06), transparent 70%),
+    #0e0e11;
+}
+
+/* Subtle dotted texture for hero / empty areas. */
+.dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+@layer components {
+  /* Surfaces */
+  .np-card {
+    @apply rounded-2xl border border-line bg-ink-850 shadow-card;
+  }
+
+  /* Buttons */
+  .np-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition duration-150 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .np-btn-accent {
+    @apply np-btn bg-accent text-ink-950 hover:bg-accent-bright hover:shadow-glow active:scale-[0.98];
+  }
+  .np-btn-ghost {
+    @apply np-btn border border-line bg-ink-800 text-slate-200 hover:border-slate-600 hover:bg-ink-700;
+  }
+  .np-icon-btn {
+    @apply inline-flex items-center justify-center rounded-xl border px-3 py-2.5 transition duration-150 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  /* Inputs */
+  .np-input {
+    @apply w-full rounded-xl border border-line bg-ink-800 px-4 py-3 text-slate-100 placeholder:text-slate-500 transition focus:border-accent-dim;
+  }
+
+  /* Badges */
+  .np-badge {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a32;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a44;
+  background-clip: padding-box;
+}
