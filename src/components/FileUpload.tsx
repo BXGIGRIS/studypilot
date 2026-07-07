@@ -6,7 +6,7 @@ import { embedMultiple } from '@/lib/embeddings';
 import { UploadCloud, FileText, Loader2, AlertTriangle } from 'lucide-react';
 
 interface FileUploadProps {
-  onUploadComplete: () => void;
+  onUploadComplete: (documentId?: string) => void;
 }
 
 export default function FileUpload({ onUploadComplete }: FileUploadProps) {
@@ -115,7 +115,7 @@ export default function FileUpload({ onUploadComplete }: FileUploadProps) {
         setUploading(false);
         setMessage('');
         setProgress(0);
-        onUploadComplete();
+        onUploadComplete(documentId || undefined);
       }, 2000);
     } catch (error: any) {
       if (documentId) {
