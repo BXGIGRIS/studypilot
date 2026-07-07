@@ -264,3 +264,4 @@ Built to help students study better. Free forever. No paywalls. No BS.
 
 Made with ❤️ for students everywhere.
 # studypilot
+# studypilot
