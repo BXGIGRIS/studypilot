@@ -6,7 +6,7 @@ import { embedText } from '@/lib/embeddings';
 import { callGroqAPI } from '@/lib/groq';
 import type { Message as MessageType, Chunk, Document } from '@/lib/supabase';
 import FileUpload from '@/components/FileUpload';
-import { Send, KeyRound, Check, Sparkles, FileText, Loader2, LogOut, Library } from 'lucide-react';
+import { Send, KeyRound, Check, Sparkles, FileText, Loader2, LogOut, Library, Trash2 } from 'lucide-react';
 
 const GROQ_KEY_STORAGE_KEY = 'studypilot_groq_api_key';
 
@@ -21,6 +21,7 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const [sending, setIsSending] = useState(false);
   const [apiKey, setApiKey] = useState('');
+  const [apiKeyDraft, setApiKeyDraft] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(true);
   const [documentTitle, setDocumentTitle] = useState('');
   const [documentStatus, setDocumentStatus] = useState<'processing' | 'ready' | 'error' | ''>('');
@@ -38,6 +39,7 @@ export default function Chat() {
 
     if (savedKey) {
       setApiKey(savedKey);
+      setApiKeyDraft(savedKey);
       setShowKeyInput(false);
     }
   }, []);
@@ -90,12 +92,37 @@ export default function Chat() {
   };
 
   const saveApiKey = () => {
-    const trimmedKey = apiKey.trim();
+    const trimmedKey = apiKeyDraft.trim();
     if (!trimmedKey) return;
 
     window.localStorage.setItem(GROQ_KEY_STORAGE_KEY, trimmedKey);
     setApiKey(trimmedKey);
+    setApiKeyDraft(trimmedKey);
     setShowKeyInput(false);
+  };
+
+  const showApiKeyForm = () => {
+    setApiKeyDraft(apiKey);
+    setShowKeyInput(true);
+  };
+
+  const clearChat = async () => {
+    if (!user || !documentId || messages.length === 0) return;
+    if (!window.confirm('Clear this chat history for the selected document?')) return;
+
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('document_id', documentId);
+
+      if (error) throw error;
+      setMessages([]);
+    } catch (error) {
+      console.error('Error clearing chat:', error);
+      alert('Could not clear this chat. Check your Supabase policies and try again.');
+    }
   };
 
   const openDocument = (nextDocumentId: string) => {
@@ -350,7 +377,7 @@ export default function Chat() {
             </div>
           </div>
 
-          {showKeyInput && !apiKey && (
+          {(showKeyInput || !apiKey) && (
             <div className="border-b border-line bg-ink-850 px-5 py-4">
               <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-slate-200">
                 <KeyRound size={15} className="text-accent" />
@@ -360,16 +387,24 @@ export default function Chat() {
                 <input
                   type="password"
                   placeholder="gsk_..."
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
+                  value={apiKeyDraft}
+                  onChange={(e) => setApiKeyDraft(e.target.value)}
                   className="np-input flex-1"
                 />
-                <button type="button" onClick={saveApiKey} disabled={!apiKey.trim()} className="np-btn-accent">
+                <button type="button" onClick={saveApiKey} disabled={!apiKeyDraft.trim()} className="np-btn-accent">
                   <Check size={16} />
                   Save key
                 </button>
               </div>
               <p className="mt-2 text-xs text-slate-500">Stored only in this browser on this device - never uploaded to StudyPilot.</p>
+            </div>
+          )}
+
+          {apiKey && !showKeyInput && (
+            <div className="border-b border-line bg-ink-900 px-5 py-2">
+              <button type="button" onClick={showApiKeyForm} className="text-xs font-semibold text-slate-500 transition hover:text-accent">
+                Change Groq key
+              </button>
             </div>
           )}
 
@@ -409,11 +444,23 @@ export default function Chat() {
                       </p>
                     </div>
                   ) : (
-                    messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`flex animate-fade-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                      >
+                    <>
+                      <div className="flex justify-center">
+                        <button
+                          type="button"
+                          onClick={clearChat}
+                          className="inline-flex items-center gap-1.5 rounded-full border border-line bg-ink-850 px-3 py-1.5 text-xs font-semibold text-slate-500 transition hover:border-rose-500/40 hover:text-rose-300"
+                        >
+                          <Trash2 size={12} />
+                          Clear chat
+                        </button>
+                      </div>
+
+                      {messages.map((msg) => (
+                        <div
+                          key={msg.id}
+                          className={`flex animate-fade-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                        >
                         <div
                           className={`max-w-2xl rounded-2xl px-4 py-3 ${
                             msg.role === 'user'
@@ -442,8 +489,9 @@ export default function Chat() {
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))
+                        </div>
+                      ))}
+                    </>
                   )}
 
                   {sending && (
