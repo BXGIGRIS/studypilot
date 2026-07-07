@@ -169,7 +169,7 @@ export default function Chat() {
       <div className="night-shell flex min-h-screen items-center justify-center text-slate-100">
         <div className="flex items-center gap-3 text-slate-400">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-          Loading…
+          Loading...
         </div>
       </div>
     );
@@ -228,7 +228,7 @@ export default function Chat() {
                 Save key
               </button>
             </div>
-            <p className="mt-2 text-xs text-slate-500">Stored only in this browser tab for the session — never uploaded.</p>
+            <p className="mt-2 text-xs text-slate-500">Stored only in this browser tab for the session - never uploaded.</p>
           </div>
         </div>
       )}
@@ -306,7 +306,7 @@ export default function Chat() {
 
                           {msg.citations.length > 2 && expandedSources !== msg.id && (
                             <p className={msg.role === 'user' ? 'text-ink-950/60' : 'text-slate-500'}>
-                              +{msg.citations.length - 2} more excerpt{msg.citations.length - 2 > 1 ? 's' : ''} — tap Sources.
+                              +{msg.citations.length - 2} more excerpt{msg.citations.length - 2 > 1 ? 's' : ''} - tap Sources.
                             </p>
                           )}
                         </div>
@@ -320,7 +320,7 @@ export default function Chat() {
                 <div className="flex justify-start">
                   <div className="flex items-center gap-2 rounded-2xl rounded-bl-sm border border-line bg-ink-800 px-4 py-3 text-sm text-slate-400 shadow-card">
                     <Loader2 size={15} className="animate-spin text-accent" />
-                    Thinking…
+                    Thinking...
                   </div>
                 </div>
               )}
@@ -334,7 +334,7 @@ export default function Chat() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={apiKey ? 'Ask a question about this document…' : 'Add your Groq API key above to start…'}
+                placeholder={apiKey ? 'Ask a question about this document...' : 'Add your Groq API key above to start...'}
                 disabled={sending || !apiKey}
                 className="np-input flex-1 disabled:opacity-50"
               />

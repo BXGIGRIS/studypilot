@@ -45,7 +45,7 @@ export default function Login() {
   return (
     <div className="night-shell min-h-screen text-slate-100">
       <div className="mx-auto grid min-h-screen w-full max-w-6xl items-center gap-12 px-6 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
-        {/* Left — pitch */}
+        {/* Left - pitch */}
         <section className="animate-fade-up">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-line bg-ink-800 px-3 py-1.5">
             <span className="h-2 w-2 rounded-full bg-accent" />
@@ -58,7 +58,7 @@ export default function Login() {
           </h1>
 
           <p className="mt-6 max-w-md text-lg leading-8 text-slate-400">
-            Drop in a textbook, paper, or lecture PDF and turn it into a focused Q&amp;A session —
+            Drop in a textbook, paper, or lecture PDF and turn it into a focused Q&amp;A session -
             every answer backed by the exact page it came from.
           </p>
 
@@ -79,12 +79,12 @@ export default function Login() {
           </div>
         </section>
 
-        {/* Right — auth card */}
+        {/* Right - auth card */}
         <section className="animate-fade-up">
           <div className="np-card p-7 sm:p-8">
             <h2 className="text-2xl font-bold tracking-tight text-white">Sign in</h2>
             <p className="mt-2 text-sm leading-6 text-slate-400">
-              Enter your email — we&apos;ll send a one-tap magic link. No password to remember.
+              Enter your email - we&apos;ll send a one-tap magic link. No password to remember.
             </p>
 
             <form onSubmit={handleMagicLink} className="mt-6 space-y-4">
@@ -107,7 +107,7 @@ export default function Login() {
                 {loading ? (
                   <>
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-ink-950/40 border-t-ink-950" />
-                    Sending…
+                    Sending...
                   </>
                 ) : (
                   <>

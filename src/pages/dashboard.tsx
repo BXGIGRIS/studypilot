@@ -123,7 +123,7 @@ export default function Dashboard() {
       <div className="night-shell flex min-h-screen items-center justify-center text-slate-100">
         <div className="flex items-center gap-3 text-slate-400">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent border-t-transparent" />
-          Loading your workspace…
+          Loading your workspace...
         </div>
       </div>
     );
@@ -170,7 +170,7 @@ export default function Dashboard() {
               <h2 className="text-xl font-bold tracking-tight text-white">Documents</h2>
               {!loadingDocs && !loadError && documents.length > 0 && (
                 <span className="np-badge border-line bg-ink-800 text-slate-400">
-                  {readyCount} ready · {documents.length} total
+                  {readyCount} ready / {documents.length} total
                 </span>
               )}
             </div>

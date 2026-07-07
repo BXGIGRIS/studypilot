@@ -161,10 +161,10 @@ export default function FileUpload({ onUploadComplete }: FileUploadProps) {
 
         <span>
           <span className="block text-xl font-bold text-white">
-            {uploading ? 'Processing your PDF…' : 'Drop a PDF to get started'}
+            {uploading ? 'Processing your PDF...' : 'Drop a PDF to get started'}
           </span>
           <span className="mt-1.5 block text-sm text-slate-400">
-            {uploading ? 'Hang tight — this can take a moment.' : 'Click to browse · up to 25 MB · 100 pages'}
+            {uploading ? 'Hang tight - this can take a moment.' : 'Click to browse / up to 25 MB / 100 pages'}
           </span>
         </span>
 
@@ -182,7 +182,7 @@ export default function FileUpload({ onUploadComplete }: FileUploadProps) {
           <div className="mb-2 flex items-center justify-between text-xs font-medium">
             <span className="flex items-center gap-1.5 text-slate-300">
               <FileText size={13} className="text-accent" />
-              {message || 'Working…'}
+              {message || 'Working...'}
             </span>
             <span className="font-mono tabular-nums text-accent">{progress}%</span>
           </div>
