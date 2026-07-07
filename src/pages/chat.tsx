@@ -354,7 +354,7 @@ export default function Chat() {
 
         <section className="np-card flex min-h-[70vh] flex-col overflow-hidden">
           <div className="border-b border-line px-5 py-4">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <span className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line bg-ink-800 text-accent sm:flex">
                 <FileText size={18} />
               </span>
@@ -374,6 +374,7 @@ export default function Chat() {
                   {loadError && <span className="text-xs text-rose-300">Could not load this document.</span>}
                 </div>
               </div>
+              <FileUpload onUploadComplete={handleUploadComplete} variant="compact" />
             </div>
           </div>
 

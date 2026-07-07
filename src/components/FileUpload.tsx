@@ -7,9 +7,10 @@ import { UploadCloud, FileText, Loader2, AlertTriangle } from 'lucide-react';
 
 interface FileUploadProps {
   onUploadComplete: (documentId?: string) => void;
+  variant?: 'card' | 'compact';
 }
 
-export default function FileUpload({ onUploadComplete }: FileUploadProps) {
+export default function FileUpload({ onUploadComplete, variant = 'card' }: FileUploadProps) {
   const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -141,6 +142,41 @@ export default function FileUpload({ onUploadComplete }: FileUploadProps) {
     message.startsWith('Please') ||
     message.startsWith('This PDF') ||
     message.startsWith('No readable');
+
+  if (variant === 'compact') {
+    return (
+      <div className="min-w-0">
+        <label
+          className={`np-btn-ghost cursor-pointer whitespace-nowrap ${uploading ? 'pointer-events-none opacity-60' : ''}`}
+          title="Upload another PDF source"
+        >
+          {uploading ? <Loader2 size={16} className="animate-spin" /> : <UploadCloud size={16} />}
+          {uploading ? 'Uploading...' : 'Add PDF'}
+          <input
+            type="file"
+            accept=".pdf"
+            onChange={handleFileUpload}
+            disabled={uploading}
+            className="hidden"
+          />
+        </label>
+
+        {(uploading || message) && (
+          <div className={`mt-2 max-w-56 text-xs ${isError ? 'text-rose-300' : 'text-slate-500'}`}>
+            <div className="truncate">{message || 'Working...'}</div>
+            {uploading && (
+              <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-ink-700">
+                <div
+                  className="h-full rounded-full bg-accent transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="np-card overflow-hidden">
