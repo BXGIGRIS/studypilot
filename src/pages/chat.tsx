@@ -24,7 +24,6 @@ export default function Chat() {
   const [showKeyInput, setShowKeyInput] = useState(true);
   const [documentTitle, setDocumentTitle] = useState('');
   const [documentStatus, setDocumentStatus] = useState<'processing' | 'ready' | 'error' | ''>('');
-  const [expandedSources, setExpandedSources] = useState<string | null>(null);
   const [loadError, setLoadError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -406,7 +405,7 @@ export default function Chat() {
                           ? 'This document is still processing. You can chat once it is ready.'
                           : documentStatus === 'error'
                             ? 'This document failed earlier. Upload it again or try another PDF.'
-                            : 'Every reply includes page citations and source previews you can expand.'}
+                            : 'Every reply includes compact page references.'}
                       </p>
                     </div>
                   ) : (
@@ -425,33 +424,21 @@ export default function Chat() {
                           <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
 
                           {msg.citations && msg.citations.length > 0 && (
-                            <div className={`mt-3 border-t pt-3 text-xs ${msg.role === 'user' ? 'border-ink-950/20' : 'border-line'}`}>
-                              <button
-                                type="button"
-                                onClick={() => setExpandedSources(expandedSources === msg.id ? null : msg.id)}
-                                className={`mb-2 flex items-center gap-1.5 font-semibold ${msg.role === 'user' ? 'text-ink-950/80' : 'text-slate-300'}`}
-                              >
-                                <FileText size={12} />
-                                {expandedSources === msg.id ? 'Hide sources' : `Sources (${msg.citations.length})`}
-                              </button>
-
-                              {(expandedSources === msg.id ? msg.citations : msg.citations.slice(0, 2)).map((c, i) => (
-                                <div
-                                  key={i}
-                                  className={`mb-2 rounded-lg border p-2.5 ${
-                                    msg.role === 'user' ? 'border-ink-950/15 bg-ink-950/5' : 'border-line bg-ink-850'
+                            <div className={`mt-3 flex flex-wrap gap-1.5 border-t pt-2.5 text-xs ${msg.role === 'user' ? 'border-ink-950/20' : 'border-line'}`}>
+                              {Array.from(new Set(msg.citations.map((citation) => citation.page))).map((page) => (
+                                <span
+                                  key={page}
+                                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 font-semibold ${
+                                    msg.role === 'user'
+                                      ? 'border-ink-950/15 bg-ink-950/5 text-ink-950/70'
+                                      : 'border-line bg-ink-850 text-slate-400'
                                   }`}
+                                  title={`Source page ${page}`}
                                 >
-                                  <p className={`font-semibold ${msg.role === 'user' ? 'text-ink-950' : 'text-accent'}`}>Page {c.page}</p>
-                                  <p className={`mt-1 leading-relaxed ${msg.role === 'user' ? 'text-ink-950/70' : 'text-slate-400'}`}>{c.snippet}</p>
-                                </div>
+                                  <FileText size={11} />
+                                  p. {page}
+                                </span>
                               ))}
-
-                              {msg.citations.length > 2 && expandedSources !== msg.id && (
-                                <p className={msg.role === 'user' ? 'text-ink-950/60' : 'text-slate-500'}>
-                                  +{msg.citations.length - 2} more excerpt{msg.citations.length - 2 > 1 ? 's' : ''} - tap Sources.
-                                </p>
-                              )}
                             </div>
                           )}
                         </div>
