@@ -43,6 +43,7 @@ textarea {
   background:
     radial-gradient(90% 55% at 50% -8%, rgba(200, 242, 77, 0.06), transparent 70%),
     #0e0e11;
+  animation: page-in 0.28s ease-out both;
 }
 
 /* Subtle dotted texture for hero / empty areas. */
@@ -62,11 +63,23 @@ textarea {
   /* Surfaces */
   .np-card {
     @apply rounded-2xl border border-line bg-ink-850 shadow-card;
+    animation: surface-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease;
   }
 
   /* Buttons */
   .np-btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition duration-150 disabled:cursor-not-allowed disabled:opacity-40;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
   .np-btn-accent {
     @apply np-btn bg-accent text-ink-950 hover:bg-accent-bright hover:shadow-glow active:scale-[0.98];
@@ -76,16 +89,71 @@ textarea {
   }
   .np-icon-btn {
     @apply inline-flex items-center justify-center rounded-xl border px-3 py-2.5 transition duration-150 disabled:cursor-not-allowed disabled:opacity-40;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease,
+      transform 160ms ease;
   }
 
   /* Inputs */
   .np-input {
     @apply w-full rounded-xl border border-line bg-ink-800 px-4 py-3 text-slate-100 placeholder:text-slate-500 transition focus:border-accent-dim;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease,
+      box-shadow 160ms ease,
+      opacity 160ms ease;
   }
 
   /* Badges */
   .np-badge {
     @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold;
+  }
+}
+
+.np-btn:not(:disabled):hover,
+.np-icon-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.np-btn:not(:disabled):active,
+.np-icon-btn:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
+}
+
+.np-input:focus {
+  box-shadow: 0 0 0 3px rgba(200, 242, 77, 0.12);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes surface-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
